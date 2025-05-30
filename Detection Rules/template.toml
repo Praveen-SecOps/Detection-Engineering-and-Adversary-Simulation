@@ -1,0 +1,42 @@
+[rule]
+author = ["Elastic"]
+description = """
+Insert description here
+"""
+from = "now-6m" # this is the default value, but you can change it to a specific time range
+name = "Insert name here"
+note = """
+Analysis and investigation steps go here.
+"""
+risk_score = 47
+severity = "Determine this based on the analysis of the rule"
+tags = [
+    "Can be used to detect malicious activity",
+]
+type = "eql"
+query = '''
+process where host.os.type == "windows" and event.type == "start" and
+  process.name: ("powershell.exe", "pwsh.exe", "powershell_ise.exe") and
+  process.command_line : ("*MailboxExportRequest*", "*-Mailbox*-ContentFilter*")
+'''
+
+[[rule.threat]] # example of a threat object
+framework = "MITRE ATT&CK"
+[[rule.threat.technique]] # example of a technique object
+id = "T1114"
+name = "Email Collection"
+reference = "https://attack.mitre.org/techniques/T1114/"
+[[rule.threat.technique.subtechnique]] # example of a subtechnique object
+id = "T1114.002"
+name = "Remote Email Collection"
+reference = "https://attack.mitre.org/techniques/T1114/002/"
+
+
+
+[rule.threat.tactic] # example of a tactic object
+id = "TA0002"
+name = "Execution"
+reference = "https://attack.mitre.org/tactics/TA0002/"
+
+
+# Optional fields
